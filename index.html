@@ -1,57 +1,210 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#f7f4ee" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#f7f4ee">
   <title>インターハイ敗戦から見えたこと</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="page">
-    <section class="canvas-wrap" id="canvasWrap" aria-live="polite">
-      <div class="image-stage" id="imageStage">
-        <img
-          src="assets/interhigh_flowchart.png"
-          alt="インターハイ敗戦を、試合の現象、心理的要因、監督と選手の翻訳の違い、今後の指導方針まで整理したフローチャート"
-          draggable="false"
-        />
+  <main class="app">
+    <header class="title-area">
+      <h1>インターハイ敗戦から見えたこと</h1>
+      <p>―「勝ちたい」を行動に翻訳できなかった試合 ―</p>
+      <small>勝ちたい気持ちはあったかもしれない。しかし、劣勢の中で“勝ちに行く行動”に翻訳できなかった。</small>
+    </header>
 
-        <!--
-          白いマスクを順番に外して、各ブロックを表示する。
-          座標は元画像 1536 × 1024 を基準にした割合。
-        -->
-        <div class="mask mask-1" data-step="1"></div>
-        <div class="mask mask-2" data-step="2"></div>
-        <div class="mask mask-3" data-step="3"></div>
-        <div class="mask mask-4" data-step="4"></div>
-        <div class="mask mask-5" data-step="5"></div>
-        <div class="mask mask-6" data-step="6"></div>
-        <div class="mask mask-7" data-step="7"></div>
-        <div class="mask mask-8" data-step="8"></div>
-        <div class="mask mask-9" data-step="9"></div>
+    <section class="map-viewport" id="mapViewport" aria-live="polite">
+      <div class="map-stage" id="mapStage">
+        <svg class="connectors" viewBox="0 0 1600 980" aria-hidden="true">
+          <defs>
+            <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0 0 L10 5 L0 10 z"></path>
+            </marker>
+          </defs>
+          <path data-line="1" d="M190 260 L190 360"/>
+          <path data-line="2" d="M320 470 L500 470"/>
+          <path data-line="3" d="M800 300 L800 410"/>
+          <path data-line="4" d="M1040 520 L1190 520"/>
+          <path data-line="5" d="M800 650 L800 720"/>
+          <path data-line="6" d="M800 770 L800 820"/>
+          <path data-line="7" d="M530 860 L620 860"/>
+          <path data-line="8" d="M980 860 L1080 860"/>
+        </svg>
+
+        <article class="map-block block-1" data-step="1">
+          <h2>1. 試合の現象</h2>
+          <div class="box">
+            <h3>何が起きたか</h3>
+            <p>序盤のオフェンスミスからカウンターを受け、相手のシュートが入り始める。点差が広がり、守備強度が下がり、30点差以上のワンサイドゲームになった。</p>
+          </div>
+          <div class="box emphasis">
+            <h3>印象的だった場面</h3>
+            <ul>
+              <li>20点以上離れても、バックコートからゆっくりボールを運ぶ</li>
+              <li>前からプレッシャーをかけない</li>
+              <li>リバウンドで身体を当てない</li>
+              <li>ルーズボールに二人いても飛び込まない</li>
+            </ul>
+          </div>
+          <div class="summary">外から見て「勝ちたいように見えなかった」</div>
+        </article>
+
+        <article class="map-block block-2" data-step="2">
+          <h2>2. 「勝ちたい」は三つに分かれる</h2>
+          <div class="stack">
+            <div><b>① 結果願望</b><span>勝てたら嬉しい。負けたくない。</span></div>
+            <div><b>② 意図・覚悟</b><span>苦しくても、自分たちから試合を動かす。</span></div>
+            <div><b>③ 行動への変換</b><span>速く攻める、身体をぶつける、飛び込む、声を出す。</span></div>
+          </div>
+          <div class="note">本人たちは①については嘘をついていない可能性がある。②・③が表れなかった。</div>
+        </article>
+
+        <article class="map-block block-3" data-step="3">
+          <h2>3. なぜ、勝ちに行く行動が出なかったのか</h2>
+          <div class="factor-grid">
+            <div class="factor">
+              <h3>試合の目的が変わった</h3>
+              <p>「勝つ試合」から「終わるのを待つ試合」へ。失敗せず消化する時間になった。</p>
+            </div>
+            <div class="factor">
+              <h3>回避動機へ反転</h3>
+              <p>成功したいより、これ以上失敗したくない。責任を負うプレーを避ける。</p>
+            </div>
+            <div class="factor">
+              <h3>「誰かが行く」が起きた</h3>
+              <p>自分が動いても変わらない。全員が半歩ずつ待つ。</p>
+            </div>
+            <div class="factor">
+              <h3>チームコラプス</h3>
+              <p>ミス、失点、相手の勢い、守備低下が循環し、チーム全体が同時に崩れた。</p>
+            </div>
+            <div class="factor">
+              <h3>高校生年代の特徴</h3>
+              <p>圧力下では判断や自己制御が安定しにくい。劣勢時の行動は別に訓練する必要がある。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="map-block block-4" data-step="4">
+          <h2>4. 同じ言葉でも、翻訳結果が違った</h2>
+          <div class="translation-grid">
+            <div class="translation coach">
+              <h3>川﨑先生の翻訳</h3>
+              <ul>
+                <li>残り時間を考えて、速く攻める</li>
+                <li>点を取り返すためにオフェンスのペースを上げる</li>
+                <li>前からプレッシャーをかける</li>
+                <li>相手を見つけて身体を当てる</li>
+                <li>抑える人・取る人を判断する</li>
+                <li>リスクを引き受けて試合を動かす</li>
+              </ul>
+              <div class="translation-label">「勝ちたい」の証拠として見えてほしかった姿</div>
+            </div>
+            <div class="same-words">
+              <span>同じ言葉</span>
+              <b>勝ちたい</b>
+              <b>冷静に</b>
+              <b>落ち着け</b>
+            </div>
+            <div class="translation players">
+              <h3>選手側の翻訳</h3>
+              <ul>
+                <li>慌てず、ゆっくりボールを運ぶ</li>
+                <li>無理をせず、確実に回す</li>
+                <li>前から当たらず、後ろで守る</li>
+                <li>身体を当てるより、守備位置を保つ</li>
+                <li>リバウンドは「見て判断」する</li>
+                <li>これ以上ミスを増やさない</li>
+              </ul>
+              <div class="translation-label">「失敗を避ける」「消化する」モードへ</div>
+            </div>
+          </div>
+          <div class="key-message">冷静になれ ＝ ゆっくり、ではない。<br>6点差なら一度整える。20点差なら「速く、しかし冷静に」攻め続ける。</div>
+        </article>
+
+        <article class="map-block block-5" data-step="5">
+          <h2>5. このズレが生んだ結果</h2>
+          <ul>
+            <li>速攻のチャンスを逃す</li>
+            <li>相手に流れを渡し続ける</li>
+            <li>守備の強度がさらに下がる</li>
+            <li>相手のシュートがどんどん入る</li>
+            <li>点差がさらに広がる</li>
+            <li>「もう止められない」が強化される</li>
+          </ul>
+          <div class="summary">選手側の翻訳結果が、監督の考える「勝ちたい行動」と一致しなかった。<br>だから、外からは「勝ちたい姿に見えなかった」。</div>
+        </article>
+
+        <article class="map-block block-6" data-step="6">
+          <h2>6. 本当の問題 ― 今回の核心</h2>
+          <div class="core-text">勝ちたい気持ちを、劣勢の中でも<br><strong>勝利につながる具体的行動へ翻訳し続ける技術</strong>が、チームに不足していた。</div>
+        </article>
+
+        <article class="map-block block-7" data-step="7">
+          <h2>7. 今後の指導で必要なこと</h2>
+          <div class="action-grid">
+            <div><b>状況を読む力</b><span>点差・残り時間・相手の状態を見る</span></div>
+            <div><b>意味づけを変える力</b><span>「もう無理」ではなく、今できることへ</span></div>
+            <div><b>具体的行動の共有</b><span>点差と時間ごとに、やるべき行動を決める</span></div>
+            <div><b>役割と責任の明確化</b><span>誰が流れを変え、誰が声を出すか</span></div>
+            <div><b>失敗を許す文化</b><span>攻める選択をした失敗は責めない</span></div>
+            <div><b>練習で反復</b><span>劣勢場面を設定し、身体と頭で覚える</span></div>
+          </div>
+        </article>
+
+        <article class="map-block block-8" data-step="8">
+          <h2>8. 監督が選手へ伝えたいこと</h2>
+          <div class="speech">
+            <p>勝ちたいと思っていなかった、とは言わない。</p>
+            <p>でも、その思いが、こちらから見える行動にはなっていなかった。</p>
+            <p>今日考えてほしいのは「勝ちたかったか」ではない。</p>
+            <p><strong>「勝ちたいという思いを、どの行動で表すつもりだったのか」</strong>だ。</p>
+          </div>
+        </article>
+
+        <article class="map-block block-9" data-step="9">
+          <h2>9. 最終的に目指すチームの姿</h2>
+          <div class="goal-flow">
+            <span>勝ちたい</span>
+            <b>↓</b>
+            <span>状況を読む</span>
+            <b>↓</b>
+            <span>意味を翻訳する</span>
+            <b>↓</b>
+            <span>具体的行動へ変える</span>
+            <b>↓</b>
+            <strong>それを繰り返し、<br>自分たちで試合を動かせるチームへ</strong>
+          </div>
+        </article>
+
+        <div class="final-banner" id="finalBanner">
+          勝ちたい気持ちを、どんな状況でも事実に基づいて意味づけ直し、具体的行動に翻訳し続けること。<br>
+          それが「勝ちたい」をコートで表現する力になる。
+        </div>
       </div>
 
-      <div class="tap-hint" id="tapHint">
-        タップして展開
+      <div class="focus-layer" id="focusLayer">
+        <div class="focus-card" id="focusCard"></div>
       </div>
     </section>
 
-    <nav class="controls" aria-label="表示操作">
-      <button id="prev" type="button" aria-label="一つ戻る">←</button>
+    <nav class="controls">
+      <button id="prev" type="button" aria-label="戻る">←</button>
       <div class="status">
-        <strong id="stepLabel">タイトル</strong>
-        <span id="counter">0 / 9</span>
+        <strong id="statusTitle">開始</strong>
+        <span id="statusCount">0 / 9</span>
       </div>
-      <button id="next" type="button" aria-label="次を表示">→</button>
+      <button id="next" type="button" aria-label="進む">→</button>
       <button id="reset" type="button" aria-label="最初に戻る">↺</button>
       <button id="fullscreen" type="button" aria-label="全画面表示">⛶</button>
     </nav>
 
-    <div class="progress" aria-hidden="true">
-      <div id="progressBar"></div>
-    </div>
+    <div class="tap-guide" id="tapGuide">タップして開始</div>
+    <div class="progress"><div id="progressBar"></div></div>
   </main>
+
   <script src="script.js"></script>
 </body>
 </html>
