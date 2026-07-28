@@ -1,81 +1,114 @@
+const labels = [
+  'タイトル',
+  '1. 試合の現象',
+  '2. 「勝ちたい」の三段階',
+  '3. 勝ちに行く行動が出なかった要因',
+  '4. 監督と選手の翻訳の違い',
+  '5. 翻訳のズレが生んだ結果',
+  '6. 今回の核心',
+  '7. 今後の指導の方向性',
+  '8. 監督が選手へ伝えたいこと',
+  '9. 最終的に目指すチーム像'
+];
 
-const slides = [...document.querySelectorAll('.slide')];
+let step = 0;
+const maxStep = 9;
+
+const masks = [...document.querySelectorAll('.mask')];
+const stepLabel = document.getElementById('stepLabel');
 const counter = document.getElementById('counter');
 const progressBar = document.getElementById('progressBar');
-let current = 0;
-let mindmapReveal = 0;
-const mindmapMaxReveal = 9;
+const tapHint = document.getElementById('tapHint');
+const canvasWrap = document.getElementById('canvasWrap');
 
-function updateMindmap() {
-  document.querySelectorAll('#mindmapSlide .reveal-item').forEach((item) => {
-    const step = Number(item.dataset.reveal || 0);
-    item.classList.toggle('is-visible', step <= mindmapReveal);
+function render() {
+  masks.forEach(mask => {
+    const n = Number(mask.dataset.step);
+    mask.classList.toggle('hidden', n <= step);
   });
-  const label = document.getElementById('mindmapCounter');
-  if (label) {
-    label.textContent = mindmapReveal === 0
-      ? '中心テーマ'
-      : mindmapReveal < mindmapMaxReveal
-        ? `${mindmapReveal} / ${mindmapMaxReveal} 展開`
-        : '全体像 完成';
+
+  stepLabel.textContent = labels[step];
+  counter.textContent = `${step} / ${maxStep}`;
+  progressBar.style.width = `${(step / maxStep) * 100}%`;
+  tapHint.textContent = step < maxStep ? 'タップして展開' : '全体像 完成';
+  tapHint.classList.toggle('done', step === maxStep);
+
+  history.replaceState(null, '', `#${step}`);
+}
+
+function next() {
+  if (step < maxStep) {
+    step += 1;
+    render();
   }
 }
 
-function showSlide(index) {
-  current = Math.max(0, Math.min(index, slides.length - 1));
-  slides.forEach((s, i) => s.classList.toggle('active', i === current));
-  counter.textContent = `${current + 1} / ${slides.length}`;
-  progressBar.style.width = `${((current + 1) / slides.length) * 100}%`;
-  history.replaceState(null, '', `#${current + 1}`);
-  if (slides[current]?.id !== 'mindmapSlide') {
-    mindmapReveal = 0;
-    updateMindmap();
+function prev() {
+  if (step > 0) {
+    step -= 1;
+    render();
   }
 }
 
-function goNext() {
-  if (slides[current]?.id === 'mindmapSlide' && mindmapReveal < mindmapMaxReveal) {
-    mindmapReveal += 1;
-    updateMindmap();
-    return;
-  }
-  showSlide(current + 1);
+function reset() {
+  step = 0;
+  render();
 }
 
-function goPrev() {
-  if (slides[current]?.id === 'mindmapSlide' && mindmapReveal > 0) {
-    mindmapReveal -= 1;
-    updateMindmap();
-    return;
-  }
-  showSlide(current - 1);
-}
-
-document.getElementById('next').addEventListener('click', goNext);
-document.getElementById('prev').addEventListener('click', goPrev);
-document.getElementById('fullscreen').addEventListener('click', async () => {
-  if (!document.fullscreenElement) {
-    await document.documentElement.requestFullscreen?.();
-  } else {
-    await document.exitFullscreen?.();
-  }
+document.getElementById('next').addEventListener('click', e => {
+  e.stopPropagation();
+  next();
+});
+document.getElementById('prev').addEventListener('click', e => {
+  e.stopPropagation();
+  prev();
+});
+document.getElementById('reset').addEventListener('click', e => {
+  e.stopPropagation();
+  reset();
+});
+document.getElementById('fullscreen').addEventListener('click', async e => {
+  e.stopPropagation();
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen?.();
+    } else {
+      await document.exitFullscreen?.();
+    }
+  } catch (_) {}
 });
 
-document.addEventListener('keydown', (e) => {
-  if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) goNext();
-  if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) goPrev();
-  if (e.key === 'Home') showSlide(0);
-  if (e.key === 'End') showSlide(slides.length - 1);
+canvasWrap.addEventListener('click', next);
+
+document.addEventListener('keydown', e => {
+  if (['ArrowRight','PageDown',' ','Enter'].includes(e.key)) {
+    e.preventDefault();
+    next();
+  }
+  if (['ArrowLeft','PageUp','Backspace'].includes(e.key)) {
+    e.preventDefault();
+    prev();
+  }
+  if (e.key === 'Home') reset();
+  if (e.key === 'End') {
+    step = maxStep;
+    render();
+  }
 });
 
 let touchStartX = 0;
-document.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX, {passive:true});
-document.addEventListener('touchend', e => {
+canvasWrap.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+}, {passive:true});
+canvasWrap.addEventListener('touchend', e => {
   const diff = e.changedTouches[0].screenX - touchStartX;
-  if (Math.abs(diff) > 60) (diff < 0 ? goNext() : goPrev());
+  if (Math.abs(diff) > 60) {
+    diff < 0 ? next() : prev();
+  }
 }, {passive:true});
 
-const hashIndex = parseInt(location.hash.replace('#',''), 10) - 1;
-showSlide(Number.isFinite(hashIndex) ? hashIndex : 0);
-
-updateMindmap();
+const initial = Number(location.hash.replace('#',''));
+if (Number.isInteger(initial) && initial >= 0 && initial <= maxStep) {
+  step = initial;
+}
+render();
